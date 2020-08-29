@@ -4,14 +4,14 @@ namespace NSE.WebApp.MVC.Models
 {
     public class ErrorViewModel
     {
-        public string RequestId { get; set; }
-
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public int ErroCode { get; set; }
+        public string Titulo { get; set; }
+        public string Mensagem { get; set; }
     }
 
     public class ResponseResult
     {
-        public int Title { get; set; }
+        public string Title { get; set; }
         public int Status { get; set; }
         public ResponseErrorMessages Errors { get; set; }
     }
