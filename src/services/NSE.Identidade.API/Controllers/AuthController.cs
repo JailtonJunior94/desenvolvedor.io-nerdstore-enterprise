@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+using NSE.WebAPI.Core.Identidade;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using NSE.Identidade.API.Extensions;
-using Microsoft.Extensions.Options;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NSE.Identidade.API.Controllers
 {
