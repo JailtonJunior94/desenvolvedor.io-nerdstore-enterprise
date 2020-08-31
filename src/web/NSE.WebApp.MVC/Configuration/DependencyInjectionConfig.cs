@@ -1,15 +1,33 @@
-﻿using NSE.WebApp.MVC.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Polly;
+using System;
+using NSE.WebApp.MVC.Services;
 using NSE.WebApp.MVC.Extensions;
+using Microsoft.AspNetCore.Http;
+using NSE.WebApp.MVC.Services.Handlers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace NSE.WebApp.MVC.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static void RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
+            //services.AddHttpClient<ICatalogoService, CatalogoService>()
+            //    .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
+            services.AddHttpClient("Refit", options =>
+            {
+                options.BaseAddress = new Uri(configuration.GetSection("CatalogoUrl").Value);
+            })
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+            .AddTypedClient(Refit.RestService.For<ICatalogoServiceRefit>)
+            .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(4, _ => TimeSpan.FromMilliseconds(3)))
+            .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromMilliseconds(30)));
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
         }
