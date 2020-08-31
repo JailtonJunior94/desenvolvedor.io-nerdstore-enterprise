@@ -1,23 +1,34 @@
-﻿using System.Linq;
-using NSE.WebApp.MVC.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using NSE.Core.Communication;
+using System.Linq;
 
 namespace NSE.WebApp.MVC.Controllers
 {
     public class MainController : Controller
     {
-        protected bool ResponsePossuiErros(ResponseResult response)
+        protected bool ResponsePossuiErros(ResponseResult resposta)
         {
-            if (response != null && response.Errors.Mensagens.Any())
+            if (resposta != null && resposta.Errors.Mensagens.Any())
             {
-                foreach (var mensagem in response.Errors.Mensagens)
+                foreach (var mensagem in resposta.Errors.Mensagens)
                 {
                     ModelState.AddModelError(string.Empty, mensagem);
                 }
+
                 return true;
             }
 
             return false;
+        }
+
+        protected void AdicionarErroValidacao(string mensagem)
+        {
+            ModelState.AddModelError(string.Empty, mensagem);
+        }
+
+        protected bool OperacaoValida()
+        {
+            return ModelState.ErrorCount == 0;
         }
     }
 }

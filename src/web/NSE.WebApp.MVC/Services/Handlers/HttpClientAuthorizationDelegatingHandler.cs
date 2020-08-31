@@ -1,9 +1,9 @@
-﻿using NSE.WebApp.MVC.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using NSE.WebApp.MVC.Extensions;
 
 namespace NSE.WebApp.MVC.Services.Handlers
 {
@@ -22,7 +22,7 @@ namespace NSE.WebApp.MVC.Services.Handlers
 
             if (!string.IsNullOrEmpty(authorizationHeader))
             {
-                request.Headers.Add("Authorization", new List<string> { authorizationHeader });
+                request.Headers.Add("Authorization", new List<string>() { authorizationHeader });
             }
 
             var token = _user.ObterUserToken();
